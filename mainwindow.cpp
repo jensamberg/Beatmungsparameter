@@ -7,6 +7,8 @@
 #define PAWMAX   60 // Max 60 mbar
 #define PINSPMAX 55 // Max 55 mbar
 
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -72,15 +74,21 @@ void MainWindow::on_PEEP_valueChanged(int arg1)
 
 
     // Find the lowest number from
-    int lowernumber = smallest(actualpinsp-5,actualpaw-1,(actualpaw-actualdpsupp)-1);
+    int lowernumber_peepmax = smallest(actualpinsp-5,actualpaw-1,(actualpaw-actualdpsupp)-1);
+
+    if(lowernumber_peepmax<=0)
+    {
+       lowernumber_peepmax=0;
+    }
 
 
-    qDebug() << "Smallest is"<<lowernumber;
+    qDebug() << "Smallest is"<<lowernumber_peepmax;
 
-    ui->PEEP->setMaximum(lowernumber);
+    ui->PEEP->setMaximum(lowernumber_peepmax);
+    ui->PEEP->setMinimum(0);
+
+    ui->PEEPMAX->display(lowernumber_peepmax);
 }
-
-
 
 void MainWindow::on_Pinsp_valueChanged(int arg1)
 {
@@ -97,7 +105,9 @@ void MainWindow::on_Pinsp_valueChanged(int arg1)
 
    // Find the lowest number from
    int lowernumber = smallest(99,actualpaw-1,PINSPMAX);
+
    ui->Pinsp->setMaximum(lowernumber);
+   ui->Pinsp->setMinimum(actualpeep+5);
 
 }
 
@@ -120,10 +130,9 @@ void MainWindow::on_Paw_valueChanged(int arg1)
      ui->Paw->setMinimum(actualpinsp+1);
 }
 
-
-
-
 void MainWindow::on_dPsupp_valueChanged(int arg1)
 {
 
 }
+
+

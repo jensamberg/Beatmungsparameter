@@ -14,6 +14,16 @@
    <string>Beatmungsparameter</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <widget class="QLCDNumber" name="PEEPMAX">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>150</y>
+      <width>64</width>
+      <height>61</height>
+     </rect>
+    </property>
+   </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
