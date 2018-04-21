@@ -22,6 +22,18 @@ private slots:
 
     void on_PEEP_valueChanged(int arg1);
 
+    void on_Pinsp_valueChanged(int arg1);
+
+    void on_Paw_valueChanged(int arg1);
+
+    void on_Paw_editingFinished();
+
+    void on_Pinsp_editingFinished();
+
+    void on_dPsupp_editingFinished();
+
+    void on_dPsupp_valueChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
 };

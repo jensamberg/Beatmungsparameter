@@ -4,6 +4,9 @@
 
 #include "littlehelper.h"
 
+#define PAWMAX   60 // Max 60 mbar
+#define PINSPMAX 55 // Max 55 mbar
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -20,32 +23,107 @@ MainWindow::~MainWindow()
 void MainWindow::on_PEEP_editingFinished()
 {
     qDebug() << "Edit PEEP einsteller finished\r\n";
+    this->on_Pinsp_valueChanged(1);
+    this->on_dPsupp_valueChanged(1);
+    this->on_Paw_valueChanged(1);
+}
+
+
+void MainWindow::on_Pinsp_editingFinished()
+{
+   qDebug() << "Edit Pinps einsteller editingFinished\r\n";
+
+   this->on_Paw_valueChanged(1);
+   this->on_PEEP_valueChanged(1);
+   this->on_dPsupp_valueChanged(1);
+}
+
+void MainWindow::on_Paw_editingFinished()
+{
+    qDebug() << "Edit Pinps einsteller editingFinished\r\n";
+
+    this->on_Pinsp_valueChanged(1);
+    this->on_PEEP_valueChanged(1);
+    this->on_dPsupp_valueChanged(1);
+}
+
+void MainWindow::on_dPsupp_editingFinished()
+{
+   qDebug() << "Edit Pinps einsteller editingFinished\r\n";
+
+   this->on_Pinsp_valueChanged(1);
+   this->on_PEEP_valueChanged(1);
+   this->on_Paw_valueChanged(1);
 }
 
 void MainWindow::on_PEEP_valueChanged(int arg1)
 {
     qDebug() << "Edit PEEP einsteller Value Changed\r\n";
 
-    /*
-     *
-     *
-     *
-     */
+    // Read out all 3 parameters which are have dependecies for PEEP
 
-
-    int actualpinsp = ui->Pinsp->value();
-    int actualpaw = ui->Paw->value();
+    int actualpinsp  = ui->Pinsp->value();
+    int actualpaw    = ui->Paw->value();
     int actualdpsupp = ui->dPsupp->value();
+    int actualpeep   = ui->PEEP->value();
 
     qDebug() << "Pinsp ="<<actualpinsp<<"Paw"<<actualpaw<<"dPsupp"<<actualdpsupp;
 
-    int lowernumber = smallest(actualpinsp,actualpaw,actualdpsupp);
 
 
-     qDebug() << "Smallest is"<<lowernumber;
+    // Find the lowest number from
+    int lowernumber = smallest(actualpinsp-5,actualpaw-1,(actualpaw-actualdpsupp)-1);
+
+
+    qDebug() << "Smallest is"<<lowernumber;
 
     ui->PEEP->setMaximum(lowernumber);
 }
 
 
 
+void MainWindow::on_Pinsp_valueChanged(int arg1)
+{
+
+
+   qDebug() << "Edit Pinps einsteller Value Changed\r\n";
+
+   int actualpinsp  = ui->Pinsp->value();
+   int actualpaw    = ui->Paw->value();
+   int actualdpsupp = ui->dPsupp->value();
+   int actualpeep   = ui->PEEP->value();
+
+   qDebug() << "Pinsp ="<<actualpinsp<<"Paw"<<actualpaw<<"dPsupp"<<actualdpsupp;
+
+   // Find the lowest number from
+   int lowernumber = smallest(99,actualpaw-1,PINSPMAX);
+   ui->Pinsp->setMaximum(lowernumber);
+
+}
+
+void MainWindow::on_Paw_valueChanged(int arg1)
+{
+    qDebug() << "Edit Paw einsteller Value Changed\r\n";
+
+    int actualpinsp  = ui->Pinsp->value();
+    int actualpaw    = ui->Paw->value();
+    int actualdpsupp = ui->dPsupp->value();
+    int actualpeep   = ui->PEEP->value();
+
+     qDebug() << "Pinsp ="<<actualpinsp<<"Paw"<<actualpaw<<"dPsupp"<<actualdpsupp;
+
+     // Find the lowest number from
+     int lowernumber = smallest(PAWMAX,PAWMAX,PAWMAX);
+
+
+     ui->Paw->setMaximum(lowernumber);
+     ui->Paw->setMinimum(actualpinsp+1);
+}
+
+
+
+
+void MainWindow::on_dPsupp_valueChanged(int arg1)
+{
+
+}
