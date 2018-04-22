@@ -13,7 +13,20 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
+
+    ui->PEEPMINLCD->setPalette(Qt::green);
+    ui->PEEPMAXLCD->setPalette(Qt::red);
+
+    ui->PINSPMINLCD->setPalette(Qt::green);
+    ui->PINSPMAXLCD->setPalette(Qt::red);
+
+    ui->PAWMINLCD->setPalette(Qt::green);
+    ui->PAWMAXLCD->setPalette(Qt::red);
+
+    ui->DSUPPMINLCD->setPalette(Qt::green);
+    ui->DSUPPMAXLCD->setPalette(Qt::red);
 }
 
 MainWindow::~MainWindow()
@@ -64,30 +77,21 @@ void MainWindow::on_PEEP_valueChanged(int arg1)
 
     // Read out all 3 parameters which are have dependecies for PEEP
 
-    int actualpinsp  = ui->Pinsp->value();
-    int actualpaw    = ui->Paw->value();
-    int actualdpsupp = ui->dPsupp->value();
-    int actualpeep   = ui->PEEP->value();
+    this->readOutActualValues(1);
 
-    qDebug() << "Pinsp ="<<actualpinsp<<"Paw"<<actualpaw<<"dPsupp"<<actualdpsupp;
-
-
+    qDebug() << "Pinsp ="<<mActualpinsp<<"Paw"<<mActualpaw<<"dPsupp"<<mActualdpsupp;
 
     // Find the lowest number from
-    int lowernumber_peepmax = smallest(actualpinsp-5,actualpaw-1,(actualpaw-actualdpsupp)-1);
-
-    if(lowernumber_peepmax<=0)
-    {
-       lowernumber_peepmax=0;
-    }
-
+    int lowernumber_peepmax = smallest(mActualpinsp-5,mActualpaw-1,(mActualpaw-mActualdpsupp)-1);
 
     qDebug() << "Smallest is"<<lowernumber_peepmax;
 
-    ui->PEEP->setMaximum(lowernumber_peepmax);
-    ui->PEEP->setMinimum(0);
+    this->mMAXPEEP = lowernumber_peepmax;
+    this->mMINPEEP = 0;
 
-    ui->PEEPMAX->display(lowernumber_peepmax);
+
+    ui->PEEP->setMaximum(this->mMAXPEEP);
+    ui->PEEP->setMinimum(this->mMINPEEP);
 }
 
 void MainWindow::on_Pinsp_valueChanged(int arg1)
@@ -96,18 +100,15 @@ void MainWindow::on_Pinsp_valueChanged(int arg1)
 
    qDebug() << "Edit Pinps einsteller Value Changed\r\n";
 
-   int actualpinsp  = ui->Pinsp->value();
-   int actualpaw    = ui->Paw->value();
-   int actualdpsupp = ui->dPsupp->value();
-   int actualpeep   = ui->PEEP->value();
+   this->readOutActualValues(1);
 
-   qDebug() << "Pinsp ="<<actualpinsp<<"Paw"<<actualpaw<<"dPsupp"<<actualdpsupp;
+   qDebug() << "Pinsp ="<<mActualpinsp<<"Paw"<<mActualpaw<<"dPsupp"<<mActualdpsupp;
 
    // Find the lowest number from
-   int lowernumber = smallest(99,actualpaw-1,PINSPMAX);
+   int lowernumber = smallest(99,mActualpaw-1,PINSPMAX);
 
    ui->Pinsp->setMaximum(lowernumber);
-   ui->Pinsp->setMinimum(actualpeep+5);
+   ui->Pinsp->setMinimum(mActualpeep+5);
 
 }
 
@@ -115,23 +116,46 @@ void MainWindow::on_Paw_valueChanged(int arg1)
 {
     qDebug() << "Edit Paw einsteller Value Changed\r\n";
 
-    int actualpinsp  = ui->Pinsp->value();
-    int actualpaw    = ui->Paw->value();
-    int actualdpsupp = ui->dPsupp->value();
-    int actualpeep   = ui->PEEP->value();
+    this->readOutActualValues(1);
 
-     qDebug() << "Pinsp ="<<actualpinsp<<"Paw"<<actualpaw<<"dPsupp"<<actualdpsupp;
+    qDebug() << "Pinsp ="<<mActualpinsp<<"Paw"<<mActualpaw<<"dPsupp"<<mActualdpsupp;
 
-     // Find the lowest number from
-     int lowernumber = smallest(PAWMAX,PAWMAX,PAWMAX);
+    // Find the lowest number from
+    int lowernumber = smallest(PAWMAX,PAWMAX,PAWMAX);
 
 
-     ui->Paw->setMaximum(lowernumber);
-     ui->Paw->setMinimum(actualpinsp+1);
+    ui->Paw->setMaximum(lowernumber);
+    ui->Paw->setMinimum(mActualpinsp+1);
 }
 
 void MainWindow::on_dPsupp_valueChanged(int arg1)
 {
+
+}
+
+void MainWindow::readOutActualValues(int arg1)
+{
+
+     mActualpinsp  = ui->Pinsp->value();
+     mActualpaw    = ui->Paw->value();
+     mActualdpsupp = ui->dPsupp->value();
+     mActualpeep   = ui->PEEP->value();
+
+}
+
+void MainWindow::refreshMINMAXLcdDisplays(int arg1)
+{
+    ui->PEEPMAXLCD->display((int)this->mMAXPEEP);
+    ui->PEEPMINLCD->display((int)this->mMINPEEP);
+
+    ui->PINSPMAXLCD->display((int)this->mMAXPINSP);
+    ui->PINSPMINLCD->display((int)this->mMINPINSP);
+
+    ui->PAWMAXLCD->display((int)this->mMAXPAW);
+    ui->PAWMINLCD->display((int)this->mMINPAW);
+
+    ui->DSUPPMAXLCD->display((int)this->mMAXDPSUPP);
+    ui->DSUPPMINLCD->display((int)this->mMINDPSUPP);
 
 }
 
