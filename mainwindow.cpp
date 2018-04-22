@@ -135,6 +135,7 @@ void MainWindow::on_dPsupp_valueChanged(int arg1)
 
 void MainWindow::readOutActualValues(int arg1)
 {
+     qDebug() << "arg 1\r\n"<<arg1;
 
      mActualpinsp  = ui->Pinsp->value();
      mActualpaw    = ui->Paw->value();
@@ -145,6 +146,8 @@ void MainWindow::readOutActualValues(int arg1)
 
 void MainWindow::refreshMINMAXLcdDisplays(int arg1)
 {
+    qDebug() << "arg 1\r\n"<<arg1;
+
     ui->PEEPMAXLCD->display((int)this->mMAXPEEP);
     ui->PEEPMINLCD->display((int)this->mMINPEEP);
 
