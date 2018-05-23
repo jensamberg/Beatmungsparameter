@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 change test file jens amberg
 
+=======
+Das ist ein Test (Zeile von Julian)
+>>>>>>> a70dd6f... changed the test.txt for testing purpose
